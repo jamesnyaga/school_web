@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+    <!-- Page Title -->
+    {% if title %}
+        <title>Rolling blog - {{ title }}</title>
+    {% else %}
+        <title>Rolling blog</title>
+    {% endif %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="navbar-nav mr-auto">
+            <div class="nav-item nav-logo rounded-circle">
+                <img src="{%static 'blog/slide31.jpg' %}" alt="school Logo" class="logo">
+            </div>
+        </div>
+        <div class="container">
+
+            <!--a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                Link with href
+              </a>
+              <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                Button with data-bs-target
+              </button>
+              
+              <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <div>
+                    Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                  </div>
+                  <div class="dropdown mt-3">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                      Dropdown button
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <div>
+                 <input type="text" placeholder="Search" id="serch_bar">
+                 <button onclick="search()">Search</button>
+            </div>-->
+            <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">ABC SCHOOL</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link text-light" href="{% url 'blog-home' %}">Home</a>
+                    <a class="nav-item nav-link text-light" href="{% url 'blog-about' %}">About</a>
+                    <!--a class="nav-item nav-link" href="{% url 'blog-gallerly' %}">Gallerly</a-->
+                    <!--a class="nav-item nav-link" href="#">Contact us</a-->
+                    <!--a class="nav-item nav-link" href="#">Alumni</a-->
+                    <a class="nav-item nav-link text-light" href="{% url 'blog-blogs' %}">Blog</a>
+                    <div class="dropdown mt-2">
+                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                        Parents portal
+                      </button>
+                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item  text-dark" href="{% url 'parents-register' %}">Register</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'parents-profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'parents-profile-update' %}">Profile Update</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown mt-2">
+                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                        Students portal
+                      </button>
+                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item  text-dark" href="{% url 'students-register' %}">Register</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'students-profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'profile_edit' %}">Profile Update</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown mt-2">
+                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                        Teachers portal
+                      </button>
+                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item  text-dark" href="{% url 'teachers-register' %}">Register</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'teachers-profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item text-dark" href="{% url 'tr-profile-update' %}">Profile Update</a></li>
+                      </ul>
+                    </div>
+                </div>
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                       <a class="nav-item nav-link text-light" href="{% url 'logout' %}">Logout</a>
+                       <a class="nav-item nav-link text-light" href="{% url 'profile' %}">profile</a>
+                    {% else %}
+                       <a class="nav-item nav-link text-light" href="{% url 'blog-login' %}">Login</a>
+                       <a class="nav-item nav-link text-light" href="{% url 'register' %}">register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div> <!-- Closing div for container -->
+    </nav>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+               {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}">
+                      {{message}}
+                  </div>
+               {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div class="content-section bg-dark text-light">
+            <h3 class="text-light">Our Sidebar</h3>
+            <p class='text-muted text-light'>You can put any information here you'd like.
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-latestPosts' %}">Latest Posts</a></li>
+                <li class="list-group-item list-group-item-light"> <a href="{% url 'blog-announcements' %}">Announcements</a></li>
+                <li class="list-group-item list-group-item-light"><a href="#">Calendars</a></li>
+                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-others' %}">etcs</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <section>
+      <div class="container">
+        <div class="mb-3">
+          <small>
+            Reach out
+          </small>
+          <div class="row">
+            <div class="col-md-8">
+              <small class="text-muted">instagram</small>
+              <small class="mr-2 ml-2 text-muted">facebook</small>
+              <small class="text-muted">x</small>
+              <small class="ml-2 text-muted">linkedIn</small>
+              <small class="ml-2 text-muted">Youtube</small>
+              <small class="ml-2 text-muted">WhatsApp</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <a href="https://www.instagram.com/muchiri_james_254/#"><i class="bi bi-instagram text-dark mx-4"></i></a>
+              <a target="_blank" href="https://web.facebook.com/profile.php?id=61558683462581"><i class="bi bi-facebook text-dark mx-2"></i></a>
+              <a href="#"><i class="bi bi-x text-dark ml-4"></i></a>
+              <a href="#"><i class="bi bi-linkedin text-dark mx-3"></i></a>
+              <a href="#"><i class="bi bi-youtube text-dark ml-4"></i></a>
+              <a target="_blank"  href="https://wa.me/qr/RCU46OUN5B3HI1"><i class="bi bi-whatsapp text-dark mx-4 ml-5"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container mb-3"><small><a href="https://rolling.pythonanywhere.com/" class="text-primary">other websites &raquo;</a></small></div>
+    </section>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <footer class="footer bg-dark text-light text-center p-3">
+    <div class="container">
+      <p class="text-muted mr-3">&copy; 2024 ABC SCHOOL. All rights reserved <br><span>Created and maintained by ABC ICT team and ABC support team</span></p>
+    </footer>
+  </body>
+</html>

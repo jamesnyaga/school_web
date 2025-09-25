@@ -1,0 +1,210 @@
+[
+{
+    "model": "students.student",
+    "pk": 3,
+    "fields": {
+        "user": 16,
+        "student_id": "113222",
+        "username": "students4",
+        "email": "student{student_id}@gmail.com",
+        "student_class": 4,
+        "full_name": "james muchiri nyaga",
+        "date_of_birth": "2024-10-04"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 18,
+    "fields": {
+        "user": 50,
+        "student_id": "11328",
+        "username": "students38",
+        "email": "student{student_id}@gmail.com",
+        "student_class": 2,
+        "full_name": "student school student",
+        "date_of_birth": "2005-04-05"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 19,
+    "fields": {
+        "user": 52,
+        "student_id": "11327",
+        "username": "students113",
+        "email": "student@gmail.com",
+        "student_class": 3,
+        "full_name": "testing student name",
+        "date_of_birth": "2013-04-06"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 20,
+    "fields": {
+        "user": 54,
+        "student_id": "1016",
+        "username": "student13",
+        "email": "student1016@gamail.com",
+        "student_class": 1,
+        "full_name": "testing student name",
+        "date_of_birth": "2000-01-01"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 21,
+    "fields": {
+        "user": 55,
+        "student_id": "11331",
+        "username": "students31",
+        "email": "student11331@gamail.com",
+        "student_class": 4,
+        "full_name": "munene kamau john",
+        "date_of_birth": "2020-01-01"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 22,
+    "fields": {
+        "user": 56,
+        "student_id": "11332",
+        "username": "students32",
+        "email": "student11332@gamail.com",
+        "student_class": 4,
+        "full_name": "testing student name",
+        "date_of_birth": "2002-02-03"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 23,
+    "fields": {
+        "user": 57,
+        "student_id": "11333",
+        "username": "student33",
+        "email": "student11333@gamail.com",
+        "student_class": 4,
+        "full_name": "testing student name",
+        "date_of_birth": "2002-04-05"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 24,
+    "fields": {
+        "user": 58,
+        "student_id": "11334",
+        "username": "student34",
+        "email": "student11334@gamail.com",
+        "student_class": 2,
+        "full_name": "testing student name",
+        "date_of_birth": "2002-04-05"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 25,
+    "fields": {
+        "user": 59,
+        "student_id": "11335",
+        "username": "student35",
+        "email": "student11335@gamail.com",
+        "student_class": 2,
+        "full_name": "testing student name",
+        "date_of_birth": "2002-04-05"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 26,
+    "fields": {
+        "user": 60,
+        "student_id": "11336",
+        "username": "final_student",
+        "email": "student11336@gamail.com",
+        "student_class": 1,
+        "full_name": "final testing student",
+        "date_of_birth": "2002-03-03"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 27,
+    "fields": {
+        "user": 67,
+        "student_id": "11304",
+        "username": "students46",
+        "email": "student11304@gamail.com",
+        "student_class": 4,
+        "full_name": "John Munene Kamau",
+        "date_of_birth": "2006-12-03"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 28,
+    "fields": {
+        "user": 68,
+        "student_id": "1010",
+        "username": "student18",
+        "email": "student1010@gamail.com",
+        "student_class": 1,
+        "full_name": "testing18 student name",
+        "date_of_birth": "2000-01-01"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 29,
+    "fields": {
+        "user": 69,
+        "student_id": "1011",
+        "username": "student19",
+        "email": "student1011@gamail.com",
+        "student_class": 1,
+        "full_name": "testing19 student name",
+        "date_of_birth": "2004-01-01"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 30,
+    "fields": {
+        "user": 70,
+        "student_id": "11112",
+        "username": "student20",
+        "email": "student11112@gamail.com",
+        "student_class": 3,
+        "full_name": "testing20 student name",
+        "date_of_birth": "2002-02-02"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 31,
+    "fields": {
+        "user": 71,
+        "student_id": "11343",
+        "username": "student43",
+        "email": "student11343@gamail.com",
+        "student_class": 1,
+        "full_name": "testing43 student name",
+        "date_of_birth": "2000-01-01"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 32,
+    "fields": {
+        "user": 85,
+        "student_id": "11344",
+        "username": "students002",
+        "email": "student11344@gamail.com",
+        "student_class": 3,
+        "full_name": "testing45 student name",
+        "date_of_birth": "2008-03-03"
+    }
+}
+]

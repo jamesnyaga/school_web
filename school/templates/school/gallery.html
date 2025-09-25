@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+   <div class="container bg-dark mb-3">
+    <h1 class="text-center text-light">Our School Gallery</h1>
+    <p class="lead text-center text-light mb-5">
+        Welcome to our gallery page! Explore the vibrant life at ABC School through our collection of images and videos.
+    </p>
+    <div class="row">
+        {% for image in images %}
+        <div class="col-md-6 col-lg-6 mb-0">
+            <div class="card bg-secondary mb-0">
+                <div class="card-body text-center">
+                    <div class="card-title mb-3">
+                        {{image.title}}
+                        <img src="{{ image.image.url }}" alt="{{image.title}}" class="img-fluid w-100 h-50">
+                        <p class="card-text">
+                            {% if image.description%}
+                                {{image.description}}
+                            {%else%}
+                                {{ pass }}
+                            {%endif%}
+                        </p>
+                        <small class="text-warning">
+                            uploaded at: {{image.uploaded_at }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+   </div>
+{% endblock content %}

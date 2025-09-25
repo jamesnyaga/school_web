@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% block content %}
+<div class="content-section">
+    <p class="account-heading lead"> student-<span class="text-secondary">{{ student.full_name}}</span> Account Updated by class teacher- <span class="text-warning"> {{ request.user.username }} </span></p>
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ student.profile.image.url }}">
+        <div class="media-body">
+            <p class="text-secondary">Adm no: {{ student.student_id }}</p>
+            <p class="text-secondary">Full Name: {{ student.full_name }}</p>
+            <p class="text-secondary">Email: {{ student.email }}</p>
+            
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Update Profile info!</legend>
+            {{student_u_form|crispy}}
+            {{student_form|crispy}}
+            {{ assignment_form|crispy}}
+            {{resource_form|crispy}}
+            {{grade_form|crispy}}
+            {{subject_grade_form|crispy}}
+            {{comment_form|crispy}}
+            {{profile_form|crispy}}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

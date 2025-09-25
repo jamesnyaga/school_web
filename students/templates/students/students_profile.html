@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+   <div class="content-section">
+      <div class="media">
+         <img class="rounded-circle account-img" src="{{ student.profile.image.url  }}" alt="Profile Image">
+         <div class="media-body">
+            <h1>{{ student.full_name }}</h1>
+            <p>The Student's personal username is <strong class="text-danger">{{ student.username }}</strong></p>
+            <p class="text-secondary">Email: {{ student.email }}</p>
+            <p class="text-secondary">Name: {{ student.full_name }}</p>
+            <p class="text-secondary">Adm no: {{ student.student_id }}</p>
+            <p class="text-secondary">Date of birth: {{ student.date_of_birth }}</p>
+
+            <h3>Subject grades for {{ profile.full_name }}<p>Adm no: <span class="text-warning">{{profile.student_id}}</span></span><p></h3>
+            {% for grade in grades %}
+               <p>{{ grade.Exam_title }}:
+                  <ul>
+                     <li>English: {{ grade.english_score }} ({{ grade.english_grade }})</li>
+                     <li>Kiswahili: {{ grade.kiswahili_score }} ({{ grade.kiswahili_grade }})</li>
+                     <li>Mathematics: {{ grade.mathematics_score }} ({{ grade.mathematics_grade }})</li>
+                     <li>Physics: {{ grade.physics_score }} ({{ grade.physics_grade }})</li>
+                     {% if grade.chemistry_score %}
+                       <li>Chemistry: {{ grade.chemistry_score }} ({{ grade.chemistry_grade }})</li>
+                     {% endif %}
+                     {% if grade.biology_score %}
+                     <li>Biology: {{ grade.biology_score }} ({{ grade.biology_grade }})</li>
+                     {% endif %}
+                     {% if grade.history_score %}
+                     <li>History: {{ grade.history_score }} ({{ grade.history_grade }})</li>
+                     {% endif %}
+                     {% if grade.geography_score %}
+                     <li>Geography: {{ grade.geography_score }} ({{ grade.geography_grade }})</li>
+                     {% endif %}
+                     {% if grade.computer_science_score %}
+                     <li>Computer Science: {{ grade.computer_science_score }} ({{ grade.computer_science_grade }})</li>
+                     {% endif %}
+                     {% if grade.art_and_design_score %}
+                     <li>Art and Design: {{ grade.art_and_design_score }} ({{ grade.art_and_design_grade }})</li>
+                     {% endif %}
+                     {% if grade.music_score %}
+                     <li>Music: {{ grade.music_score }} ({{ grade.music_grade }})</li>
+                     {% endif %}
+                     {% if grade.physical_education_score %}
+                     <li>Physical Education: {{ grade.physical_education_score }} ({{ grade.physical_education_grade }})</li>
+                     {% endif %}
+                     {% if grade.religious_education_score %}
+                     <li>Religious Education: {{ grade.religious_education_score }} ({{ grade.religious_education_grade }})</li>
+                     {% endif %}
+                 </ul>
+               </p>
+               <!-- Display other grade fields as needed -->
+            {% empty %}
+               <p>No grades available.</p>
+            {% endfor %}
+
+            <h3>Average Grades</h3>
+            {% for avg_grade in average_grades %}
+               <p>Exam Tittle: {{ avg_grade.Exam_title }}<h3 class="text-muted">Score: {{ avg_grade.grade }}</h3></p>
+               <!-- Display other average grade fields as needed -->
+            {% empty %}
+               <p>No average grades available.</p>
+            {% endfor %}
+
+            <h3>Assignments</h3>
+            {% for assignment in assignments %}
+               <p><strong>{{ assignment.title }}:</strong> 
+                  <br>{{ assignment.description }}</p>
+                  <p class="text-primary">Assignment due date: <span class="text-danger">{{assignment.due_date}}</span></p>
+               <!-- Display other assignment fields as needed -->
+            {% empty %}
+               <p>No assignments available.</p>
+            {% endfor %}
+
+            <h3>Resources</h3>
+            {% for resource in resources %}
+               <p>{{ resource.title }}: {{ resource.resource_description }}</p>
+               <!-- Display other resource fields as needed -->
+            {% empty %}
+               <p>No resources available.</p>
+            {% endfor %}
+             <div class="container bg-dark text-light p-5 px-0">
+               <h3 class="text-light bt-3 py-3">Class Teachers' Comments</h3>
+               {% for comment in comments %}
+                  <p>{{ profile.full_name }} has this comment on discipline:<br>{{ comment.student_discipline }} <br> And this on academics:</p>
+                  <p>{{ comment.comment_on_academics }}</p>
+                  <!-- Display other comment fields as needed -->
+               {% empty %}
+                  <p>No comments available.</p>
+               {% endfor %}
+             </div>
+         </div>
+      </div>
+       <h3 class="text-muted py-3">Download Results</h3>
+       <a href="{% url 'download_results' %}" class="btn btn-outline-info mb-3 mr-5">Download</a>
+       <a class="btn btn-outline-info mb-3 ml-5" href="{% url 'profile_edit' %}">Profile Update</a>
+   </div>
+{% endblock %}

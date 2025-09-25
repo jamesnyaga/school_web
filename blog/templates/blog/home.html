@@ -1,0 +1,139 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<div class="jumbotron">
+    <div id="SchoolCarousel" class="carousel slide mb-3" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#SchoolCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#SchoolCarousel" data-slide-to="1"></li>
+          <li data-target="#SchoolCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="{% static 'blog/slide_one.jpg' %}" alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="{% static 'blog/slide2.jpg' %}" alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block img-fluid w-100"src="{% static 'blog/slide2.jpg' %}" alt="Third slide">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#SchoolCarousel" role="button" data-slide="prev">
+        </a>
+        <a class="carousel-control-next" href="#SchoolCarousel" role="button" data-slide="next">
+        </a> 
+    <div class="carousel-caption">
+        <h1 class="text-light">Welcome to <span class="text-warning">ABC School</span></h1>
+        <p>We provide the best education in the continent</p>
+      </div>
+  </div>  
+  <div class="row">
+    <div class="col-lg-4 col-md-4 mr-5">
+        <p class="py-3 mb-0">Learn more about our academic programs and extracurricular activities.</p>
+        <a class="btn btn-primary btn-sm pt-0" href="{%url 'blog-about'%}" role="button">Learn more</a>
+    </div>
+    <div class="col-lg-4 col-md-4">
+        <p class="py-3 mb-0">The school gallery have the events that have taken place in the past and the awaiting events</p>
+        <a class="btn btn-secondary btn-sm pt-0" href="{%url 'gallery'%}" role="button">View gallery</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-secondary text-center text-light mb-3">
+           <div class="card-title h3">Academics</div>
+           <div class="card-body pt-2">
+              <p>Explore our academic programs and curriculum designed to foster learning and growth.</p>
+              <a class="btn btn-secondary text-light bg-dark mb-2" href="{% url 'blog-academics' %}">View details &raquo;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-light text-dark text-center mb-3">
+            <div class="card-title h3">
+                Admissions
+            </div>
+            <div class="card-body pt-3">
+                <p>Find out more about our admissions process and how to apply to our school.</p>
+                <a class="btn btn-primary" href="{% url 'blog-admissions' %}">View details &raquo;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-dark text-light text-center mb-3">
+            <div class="card-title h3">
+                Student Life
+            </div>
+            <div class="card-body pt-3">
+                <p>Discover the various extracurricular activities and clubs available to our students.</p>
+                <a class="btn btn-secondary" href="{% url 'blog-student lifes' %}">View details &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="p-5 bg-secondary mb-3" id="questions">
+  <div class="container">
+    <h2 class="text-center mb-4 text-light">
+      Friquently asked Questions
+    </h2>
+    <div class="accordion accordion-flush" id="questions">
+      <!--item 1-->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+        <button class="accordion-button collapsed bg-dark text-light" type="button" 
+           data-bs-toggle="collapse" data-bs-target="#question-one"> <small>How do I access my child's grades and academic progress?</small>
+        </button>
+        </h2>
+        <div id="question-one" class="accordion-collapse collapse">
+        <div class="accordion-body text-light">Parents can access their child’s grades and academic progress through the online parent portal. Grades are updated regularly, and you can also view comments from teachers on your child’s performance. If you do not have access, please contact the school administration to set up your account.</div>
+        </div>
+      </div>
+      <!--item 2-->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed bg-dark text-light" type="button" 
+           data-bs-toggle="collapse" data-bs-target="#question-two"> <small> What are the admission requirements for new students?</small>
+          </button>
+        </h2>
+        <div id="question-two" class="accordion-collapse collapse">
+          <div class="accordion-body text-light">To enroll a new student, you need to provide a completed application form, a copy of the birth certificate, previous school records, and proof of residency. Additional documents, such as vaccination records, may be required depending on the grade level.</div>
+        </div>
+        </div>
+      <!--item 3-->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed bg-dark text-light" type="button" 
+           data-bs-toggle="collapse" data-bs-target="#question-three"> <small>What are the school hours?</small>
+          </button>
+        </h2>
+        <div id="question-three" class="accordion-collapse collapse">
+          <div class="accordion-body text-light">The school operates from 8:00 AM to 3:30 PM, Monday through Friday. We recommend that students arrive at least 10 minutes before the start of classes to prepare for the day.</div>
+        </div>
+      </div>
+      <!--item 4-->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="questions">
+          <button class="accordion-button collapsed bg-dark text-light" type="button" 
+           data-bs-toggle="collapse" data-bs-target="#question-four"> <small>How can I contact my child’s teacher?</small>
+          </button>
+        </h2>
+        <div id="question-four" class="accordion-collapse collapse">
+          <div class="accordion-body text-light">You can contact your child’s teacher via email or through the parent portal available on our website. In case of urgent matters, you may also call the school office, and they will facilitate communication with the teacher.</div>
+        </div>
+        </div>
+        <!--item 5-->
+        <div class="accordion-item">
+        <h2 class="accordion-header" id="questions">
+          <button class="accordion-button collapsed bg-dark text-light" type="button" 
+           data-bs-toggle="collapse" data-bs-target="#question-five"> <small>What extracurricular activities are offered?</small>
+          </button>
+        </h2>
+        <div id="question-five" class="accordion-collapse collapse">
+          <div class="accordion-body text-light">We offer a wide range of extracurricular activities, including sports (soccer, basketball, swimming), arts (drama, music, painting), and academic clubs (science club, debate team, chess club). Students can sign up for these activities at the beginning of each term.</div>
+        </div>
+        </div>
+      </div>
+  </div>
+</section>
+{% endblock %}

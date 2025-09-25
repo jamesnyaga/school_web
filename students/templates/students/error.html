@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <body>
+        <div class="jumbotron">
+            <h1>Error!</h1>
+            <p>You need to be logged in as a student to access this page. <a href='/login/?next={{ request.GET.next }}'>Login as Student</a></p>
+            <a class="btn btn-secondary" href="{% url 'blog-home' %}">back &raquo;</a>
+        </div>
+    </body>
+{%endblock content%}
+</html>

@@ -1,0 +1,28 @@
+{%extends 'blog/base.html'%}
+{%load crispy_forms_tags %}
+{%block content%}
+     <div class="container">
+          <div class="content-section">
+               <div class="media">
+                    <img  class="rounded-circle account-img" src="{{ parent.profile.image.url  }}"alt="">
+                    <div class="media-body">
+                        <h1 class="account-heading">parents's username: <span class="text-warning">{{request.user.username}}</span></p></h1>
+                        <p class="text-secondary"><strong>Full name:</strong> {{parent.full_name}}</p>
+                        <p class="text-secondary"><strong>Email :</strong> {{request.user.email}}</p>
+                        <p class="text-secondary"><strong>Emergency Contact: </strong> {{parent.contact}}</p>
+                        <p class="text-secondary"><strong>My Student Class: </strong> {{parent.My_Student_Adm_No.student_class}}</p>
+                        <hr>
+                         <fieldset class="form-group">
+                            <div class="form-group"><legend class="border-bottom mb-4">Edit Profile</legend>
+                               {{ form|crispy }}
+                               <a href="{%url 'parents-profile-update'%}"><button class="btn btn-outline-info">Edit profile</button></a>
+                            </div>
+                         </fieldset>
+                        <hr>
+                        <h2 class="text-secondary">My Child Profile</h2>
+                        {{parent.My_Student_Adm_No.full_name}} <a href="{% url 'parent-student-profile' student.id %}">Adm No-{{parent.My_Student_Adm_No.student_id}}</a>
+                    </div>
+               </div>
+          </div>
+     </div>
+{%endblock content%}

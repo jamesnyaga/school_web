@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        h2, h3 {
+            color: #333;
+            margin-top: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .no-data {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="path/to/school_logo.png" alt="School Logo">
+            <h1>ABC School</h1>
+            <p>Student Results Report</p>
+        </div>
+
+        <!-- Student Information -->
+        <h2>{{ profile.full_name }} - Results</h2>
+        <p>Adm no: {{ profile.student_id }}</p>
+
+        <!-- Grades Table -->
+        <h2>Grades</h2>
+        {% if grades %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                        <tr><td>Mathematics</td><td>{{ grade.mathematics_score }}</td><td>{{ grade.mathematics_grade }}</td></tr>
+                        <tr><td>English</td><td>{{ grade.english_score }}</td><td>{{ grade.english_grade }}</td></tr>
+                        <tr><td>Kiswahili</td><td>{{ grade.kiswahili_score }}</td><td>{{ grade.kiswahili_grade }}</td></tr>
+                        {% if grade.chemistry_score %}
+                        <tr><td>Chemistry</td><td>{{ grade.chemistry_score }}</td><td>{{ grade.chemistry_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.physics_score %}
+                        <tr><td>Physics</td><td>{{ grade.physics_score }}</td><td>{{ grade.physics_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.biology_score %}
+                        <tr><td>Biology</td><td>{{ grade.biology_score }}</td><td>{{ grade.biology_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.history_score %}
+                        <tr><td>History</td><td>{{ grade.history_score }}</td><td>{{ grade.history_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.geography_score %}
+                        <tr><td>Geography</td><td>{{ grade.geography_score }}</td><td>{{ grade.geography_grade }}</td></tr>
+                        {% endif %}
+                        <tr><td>English</td><td>{{ grade.english_score }}</td><td>{{ grade.english_grade }}</td></tr>
+                        <tr><td>Kiswahili</td><td>{{ grade.kiswahili_score }}</td><td>{{ grade.kiswahili_grade }}</td></tr>
+                        {% if grade.computer_science_score %}
+                        <tr><td>Computer Science</td><td>{{ grade.computer_science_score }}</td><td>{{ grade.computer_science_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.art_and_design_score %}
+                        <tr><td>Art and Design</td><td>{{ grade.art_and_design_score }}</td><td>{{ grade.art_and_design_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.music_score %}
+                        <tr><td>Music</td><td>{{ grade.music_score }}</td><td>{{ grade.music_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.physical_education_score %}
+                        <tr><td>Physical Education</td><td>{{ grade.physical_education_score }}</td><td>{{ grade.physical_education_grade }}</td></tr>
+                        {% endif %}
+                        {% if grade.religious_education_score %}
+                        <tr><td>Religious Education</td><td>{{ grade.religious_education_score }}</td><td>{{ grade.religious_education_grade }}</td></tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No grades available.</p>
+        {% endif %}
+
+        <!-- Average Grades Table -->
+        <h2>Average Grades</h2>
+        {% if average_grades %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Exam Title</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for avg_grade in average_grades %}
+                        <tr><td>{{ avg_grade.Exam_title }}</td><td>{{ avg_grade.grade }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No average grades available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

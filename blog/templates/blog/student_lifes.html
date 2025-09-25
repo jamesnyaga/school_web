@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %}
+{%load static%}
+{% block content %}
+ <div class="container">
+  <div class="content-section">
+   <div class="col-md-8">
+        <h2>ABC School Student Life</h2>
+        <p>Discover the various extracurricular activities and clubs available to our students.</p>
+        
+        <h3>Types of Activities</h3>
+        <p>Sports teams, academic clubs, cultural organizations, volunteer opportunities, etc.</p>
+        
+        <h3>Benefits of Participation</h3>
+        <p>Participating in extracurricular activities can help students develop leadership skills, make new friends, enhance their resumes, and foster personal growth.</p>
+        
+        <h3>Upcoming Events</h3>
+        <p>Stay tuned for exciting events and meetings related to student life. Check our events calendar for more details.</p>
+        
+        <h3>Testimonials</h3>
+        <blockquote>
+            "Joining the Club Name was one of the best decisions I made in college. It helped me grow as a leader and provided me with lifelong friendships." - John Doe, Class of 2023
+        </blockquote>
+        
+        <h3>Contact Information</h3>
+        <p>For more information about specific clubs or activities, please contact [Department/Person Name] at [Contact Email/Phone Number].</p>
+        
+        <h3>Photos/Videos</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'blog/slide3.jpg'%}" alt="Image 1" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'blog/slide2.jpg'%}" alt="Image 2" class="img-fluid">
+            </div>
+        </div>
+        
+        <h3>Social Media Links</h3>
+        <p>Follow us on social media to stay updated on activities and events:</p>
+        <ul class="list-unstyled">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+        </ul>
+        
+        <a class="btn btn-primary" href="#">Back to Homepage</a>
+    </div>
+  </div>
+ </div>
+{% endblock content %}

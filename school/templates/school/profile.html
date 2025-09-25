@@ -1,0 +1,47 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+  <div class="container">
+    <div class="content-section">
+    <div class="media">
+        {%if student %}
+           <img class="rounded-circle account-img" src="{{ student.profile.image.url}}">
+           {% elif teacher %}
+              <img class="rounded-circle account-img" src="{{ teacher.profile.image.url}}">
+            {% elif parent %}
+              <img class="rounded-circle account-img" src="{{ parent.profile.image.url}}">
+            {%else%}
+              <img class="rounded-circle account-img" src="{{ profile.image.url}}">
+       {%endif%}
+       {%if student %}
+           <div class="media-body">
+                <h2 class="account-heading">{{ student.full_name }}</h2>
+                <p>personal username: <strong class="text-primary">{{ request.user.username }}</strong></p>
+                <p class="text-secondary">Email: {{ request.user.email }}</p>
+                <p class="text-secondary">Name: {{ student.full_name }}</p>
+                <p class="text-secondary">Adm no: {{ student.student_id }}</p>
+                <p class="text-secondary">Date of birth: {{ student.date_of_birth }}</p>
+                <small class="text-muted text-primary "><a href="{%url 'students-profile' %}">personal info!</a></small>
+            </div>
+            {%elif teacher%}
+               <div class="media-body">
+                  <h2 class="account-heading">{{ teacher.full_name }}</h2>
+                  <p class="text-secondary">Personal Username: <small><span class="text-primary">{{ request.user.username }}</span></small></p>
+                  <p class="text-secondary"><h3>Description</h3> {{ teacher.tr_description }}</p>
+                  <small class="text-muted text-primary "><a href="{%url 'teachers-profile' %}">Professional actions!</a></small>
+               </div>
+               {%elif parent%}
+               <div class="media-body">
+                  <h2 class="account-heading">{{ parent.full_name }}</h2>
+                  <p class="text-secondary">Personal Username: <small><span class="text-primary">{{ request.user.username }}</span></small></p>
+                  <p class="text-secondary"><strong>Email :</strong> {{request.user.email}}</p>
+                  <p class="text-secondary"><strong>Emergency Contact: </strong> {{parent.contact}}</p>
+                  <p class="text-secondary"><strong>My Student Class: </strong> {{parent.My_Student_Adm_No.student_class}}</p>
+                  <small class="text-muted text-primary "><a href="{%url 'parents-profile' %}">Professional actions!</a></small>
+               </div>
+            {%else%}
+            <h2 class="account-heading">{{ request.user.username }}</h2>
+        {%endif%}
+     </div>
+    </div>
+  </div>
+{% endblock content %}
