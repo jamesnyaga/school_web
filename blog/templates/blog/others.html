@@ -1,0 +1,126 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  /* Scoped styles to prevent conflict */
+  .coming-soon-wrapper {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #f8faff, #eef2ff);
+    padding: 40px;
+    overflow: hidden;
+  }
+
+  .coming-soon-card {
+    background: #fff;
+    padding: 60px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .glow-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3f51b5;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 5px #8ab4f8, 0 0 10px #8ab4f8; }
+    to { text-shadow: 0 0 15px #3f51b5, 0 0 25px #5c6bc0; }
+  }
+
+  .coming-soon-logo {
+    border-radius: 50%;
+    margin-bottom: 15px;
+    width: 70px;
+    animation: spin 8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  #countdown {
+    font-weight: 600;
+    color: #3f51b5;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+  }
+
+  .back-btn {
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .back-btn:hover {
+    background-color: #5c6bc0;
+    transform: scale(1.05);
+  }
+
+  /* Floating particles */
+  .particle {
+    position: absolute;
+    background: rgba(63,81,181,0.2);
+    border-radius: 50%;
+    animation: move 12s linear infinite;
+  }
+
+  @keyframes move {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+  }
+</style>
+
+<div class="coming-soon-wrapper">
+  <div class="coming-soon-card">
+    <img src="{% static 'blog/logo.jpeg' %}" alt="School Logo" class="coming-soon-logo">
+    <h2 class="glow-text">🚀 Coming Soon</h2>
+    <p style="color:#555; font-size:1rem; margin-bottom:25px;">
+      We're crafting a brand new experience for <strong>EduRolling</strong> — interactive, smart, and built for the future of learning.
+    </p>
+    <div id="countdown">Launching Soon...</div>
+    <a href="{% url 'blog-home' %}" class="back-btn">Back to Homepage</a>
+  </div>
+
+  <!-- Floating particles -->
+  <div class="particle" style="width:20px; height:20px; top:80%; left:10%; animation-delay:0s;"></div>
+  <div class="particle" style="width:15px; height:15px; top:90%; left:70%; animation-delay:2s;"></div>
+  <div class="particle" style="width:10px; height:10px; top:85%; left:50%; animation-delay:4s;"></div>
+</div>
+
+<script>
+  const countDownDate = new Date("Dec 31, 2025 23:59:59").getTime();
+  const timer = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = countDownDate - now;
+    if (distance < 0) {
+      document.getElementById("countdown").innerHTML = "🎉 We're Live!";
+      clearInterval(timer);
+      return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+  }, 1000);
+</script>
+{% endblock %}

@@ -1,39 +1,179 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block content %}
- <div class="container">
-  <div class="content-section">
-   <div class="col-md-8">
-        <h2>About Us</h2>
-        
-        <h3>Our History</h3>
-        <p>Learn about the founding and evolution of [Your Institution Name].</p>
-        
-        <h3>Our Mission</h3>
-        <p>Our mission is to [briefly describe your institution's mission statement and core values].</p>
-        
-        <h3>Leadership</h3>
-        <p>Meet the leadership team guiding [Your Institution Name] towards its goals.</p>
-        <ul>
-            <li><strong>President:</strong> [Name]</li>
-            <li><strong>Provost:</strong> [Name]</li>
-            <!-- Add more leadership positions as needed -->
-        </ul>
-        
-        <h3>Campus</h3>
-        <p>Explore our beautiful campus located in [Location].</p>
-        <p>Address: [Campus Address]</p>
-        <p>Phone: [Campus Phone Number]</p>
-        
-        <h3>Accreditation</h3>
-        <p>[Your Institution Name] is accredited by [Accreditation Body]. Learn more about our accreditation status.</p>
-        
-        <h3>Contact Us</h3>
-        <p>If you have any questions or would like more information, please don't hesitate to contact us:</p>
-        <p>Email: info@yourinstitution.edu</p>
-        <p>Phone: +1 (123) 456-7890</p>
-        
-        <a class="btn btn-primary" href="#">Learn More</a>
+<style>
+  /* Scoped styles */
+  .about-section {
+    background: linear-gradient(135deg, #f8faff, #eef2ff);
+    padding: 60px 20px;
+    min-height: 80vh;
+  }
+
+  .about-card {
+    background: #fff;
+    max-width: 900px;
+    margin: auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .about-title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #3f51b5;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .about-subtitle {
+    color: #555;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+  }
+
+  .about-content {
+    line-height: 1.8;
+    color: #444;
+  }
+
+  .highlight {
+    color: #3f51b5;
+    font-weight: 600;
+  }
+
+  .mission-box {
+    background: #f5f7ff;
+    padding: 20px;
+    border-left: 4px solid #3f51b5;
+    border-radius: 8px;
+    margin-top: 25px;
+  }
+
+  .about-btn {
+    display: inline-block;
+    margin-top: 30px;
+    background: #3f51b5;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .about-btn:hover {
+    background: #5c6bc0;
+    transform: scale(1.05);
+  }
+
+  /* Crafted by section */
+  .crafted-section {
+    text-align: center;
+    margin-top: 60px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 40px;
+  }
+
+  .crafted-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .crafted-name {
+    font-weight: 700;
+    color: #3f51b5;
+    font-size: 1.2rem;
+  }
+
+  .crafted-role {
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  .crafted-icons a {
+    color: #3f51b5;
+    font-size: 1.3rem;
+    margin: 0 8px;
+    transition: 0.3s;
+  }
+
+  .crafted-icons a:hover {
+    color: #5c6bc0;
+    transform: scale(1.1);
+  }
+</style>
+
+<section class="about-section">
+  <div class="about-card">
+    <img src="{% static 'blog/logo.jpeg' %}" alt="School Logo" width="80" class="d-block mx-auto mb-3 rounded-circle">
+
+    <h2 class="about-title">About This Website</h2>
+    <p class="about-subtitle">Built with passion, designed for education, and powered by technology.</p>
+
+    <div class="about-content">
+      <p>
+        The <strong>ABC School Website</strong> is a modern digital platform created to bring students, teachers, and parents together
+        in one connected learning environment. Developed with <span class="highlight">Django and Bootstrap</span>,
+        it combines efficiency, simplicity, and innovation to support learning and school management.
+      </p>
+
+      <p>
+        This platform allows teachers to manage assignments, track performance, and share updates easily.
+        Students can access their grades, assignments, and feedback from anywhere — while parents stay informed about their child’s progress and school activities.
+      </p>
+
+      <div class="mission-box">
+        <h5 class="fw-bold text-primary mb-2">🎯 Our Mission</h5>
+        <p>
+          To create a digital bridge between schools and families — making education more transparent,
+          accessible, and interactive for everyone involved.
+        </p>
+      </div>
+
+      <div class="mission-box">
+        <h5 class="fw-bold text-primary mb-2">💡 Vision</h5>
+        <p>
+          To transform traditional school systems into smart learning environments powered by
+          <span class="highlight">AI, innovation, and collaboration</span>.
+        </p>
+      </div>
+
+      <p style="margin-top:20px;">
+        This website continues to evolve — new features such as AI-based learning assistance, digital attendance,
+        and parent notifications are on the way.
+      </p>
+
+      <div class="text-center">
+        <a href="{% url 'blog-home' %}" class="about-btn">Back to Homepage</a>
+      </div>
+
+      <!-- Crafted By Section -->
+      <div class="crafted-section">
+        <img src="{% static 'blog/james.jpg' %}" alt="James Muchiri" class="crafted-img">
+        <div class="crafted-name">James Muchiri</div>
+        <div class="crafted-role">Full-Stack Developer & Designer</div>
+        <p style="color:#666; font-size:0.95rem; margin-top:8px;">
+          Passionate about creating impactful web solutions that inspire learning and connection.
+        </p>
+        <div class="crafted-icons mt-2">
+          <a href="https://www.instagram.com/muchiri_james_254/#"><i class="bi bi-instagram"></i></a>
+          <a href="https://web.facebook.com/profile.php?id=61558683462581"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="https://wa.me/qr/RCU46OUN5B3HI1"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
     </div>
   </div>
- </div>
-{% endblock content %}
+</section>
+{% endblock %}
