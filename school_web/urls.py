@@ -20,18 +20,27 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from school import views as user_views
+from blog import views as edu_views
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
-    path('login/',auth_views.LoginView.as_view(template_name = 'school/login.html'),name='login'),
-    path('logout/',auth_views.LogoutView.as_view(template_name = 'school/logout.html'),name='logout'),
-    path('', include('blog.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='school/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='school/logout.html'), name='logout'),
+
+    # school-specific URLs
+    path('<str:school_slug>/', include('school_web.school_urls')), 
+    path('', edu_views.home, name='home'),  # default EDUROLLING site
+
+    # other apps
     path('students/', include('students.urls')),
     path('teachers/', include('teachers.urls')),
     path('parents/', include('parents.urls')),
-    path('school/', include('school.urls')),
+    path('<slug:school_slug>/', include('school.urls')),
+    path('blog/', include('blog.urls')),
 ]
 
 if settings.DEBUG:

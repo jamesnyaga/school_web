@@ -15,7 +15,7 @@ def TeachersProfile(request):
     if not teacher:
         return render(request, 'teachers/error.html')
     
-    students = Student.objects.filter(student_class=teacher.class_teacher)
+    students = Student.objects.for_school(request.user.teacher.school).filter(student_class=request.user.teacher.class_teacher)
     context = {
         'students':students,
         'profile':Profile,

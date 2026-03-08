@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from school.models import School
 
 # Create your models here.
 
@@ -10,6 +11,7 @@ class BlogPosts(models.Model):
 	image = models.ImageField(upload_to = 'blog_images/',blank=True, null=True)
 	date_posted = models.DateTimeField(default = timezone.now)
 	author = models.ForeignKey(User, on_delete = models.CASCADE)
+	school = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True)
 
 
 	def __str__(self):

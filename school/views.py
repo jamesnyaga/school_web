@@ -7,15 +7,27 @@ from students .models import Student, Profile
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-def gallery_display(request):
-     # Query related objects
-     images2 = Gallery.objects.all()
+@login_required
+def gallery_display(request,school_slug=None):
+    user = request.user
+    
+    if hasattr(user, 'teacher'):
+        school = user.teacher.school
+    elif hasattr(user, 'student'):
+        school = user.student.school
+    elif hasattr(user, 'parent'):
+        school = user.parent.school
+    else:
+        # fallback to EDUROLLING if no profile
+        from school.models import School
+        school = School.objects.get(slug='edurolling')
 
-     context = {
-          'images':images2
-     }
-     return render(request, 'school/gallery.html', context)
+    school = School.objects.get(slug=school_slug)
+
+    images2 = Gallery.objects.filter(school=school)
+
+    context = {'images': images2, 'school':school}
+    return render(request, 'school/gallery.html', context)
 
 def super_user_require(view_func):
      def wrapper(request, *args, **kwargs):

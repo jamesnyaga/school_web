@@ -3,13 +3,28 @@ from django.contrib.auth.models import User
 from .models import BlogPosts
 from parents.models import Parent
 from teachers.models import Teacher
+from school.models import School, Gallery
 # Create your views here.
-def Post_list(request):
-	posts = BlogPosts.objects.all().order_by('-date_posted')
-	context = {
-		'posts':posts
-	}
-	return render(request, 'blog/blog_posts.html',context)
+def Post_list(request, school_slug):
+    user = request.user
+
+    if hasattr(user, 'teacher'):
+        school = user.teacher.school
+    elif hasattr(user, 'student'):
+        school = user.student.school
+    elif hasattr(user, 'parent'):
+        school = user.parent.school
+    else:
+        # fallback to EDUROLLING if no profile
+        school = School.objects.get(code='EDU001')
+
+    # Filter posts by the user's school
+    school = get_object_or_404(School, slug=school_slug)
+    posts = BlogPosts.objects.filter(school=school).order_by('-date_posted')
+
+    context = {'posts': posts, 'school':school}
+    return render(request, 'blog/blog_posts.html', context)
+
 def get_profile_pic(self):
 	if hasattr(self, 'parent'):
 		return self.parent.profile.image.url
@@ -33,16 +48,26 @@ def latestPosts(request):
 
 
 
+def home(request, school_slug=None):
+    # If school_code is None, fallback to EDUROLLING
+    if school_slug:
+        school = get_object_or_404(School, slug=school_slug.lower())  # school codes are uppercase
+    else:
+        school = School.objects.get(code='EDU001')  # EDUROLLING default
+
+    gallery_images = Gallery.objects.filter(school=school)
+    posts = BlogPosts.objects.filter(school=school).order_by('-date_posted')
+
+    context = {
+        'school': school,
+        'gallery_images': gallery_images,
+        'posts': posts,
+    }
+    return render(request, 'blog/home.html', context)
 
 
 
 
-
-
-
-
-def home(request):
-	return render(request, 'blog/home.html')
 
 def about(request):
 	return render(request, 'blog/about.html')

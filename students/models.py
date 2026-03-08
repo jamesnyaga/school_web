@@ -1,6 +1,7 @@
 from django.db import models, transaction
 from django.contrib.auth.models import User
 from PIL import Image
+from school.models import School
 
 # Create your models here.
 class Class(models.Model):
@@ -8,28 +9,37 @@ class Class(models.Model):
 	def __str__(self):
 		return self.name
 
+class StudentManager(models.Manager):
+    def for_school(self, school):
+        return self.filter(school=school)
+        
+
 class Student(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
-	student_id = models.CharField(max_length=10, unique=True)
-	username = models.CharField(max_length=30, unique=True, default='student')
-	email = models.EmailField(blank=True)
-	student_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True)
-	full_name = models.CharField(max_length=100)
-	date_of_birth = models.DateField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    student_id = models.CharField(max_length=10)
+    username = models.CharField(max_length=30, unique=True, default='student')
+    email = models.EmailField(blank=True)
+    student_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True)
+    full_name = models.CharField(max_length=100)
+    date_of_birth = models.DateField()
+
+    class Meta:
+        unique_together = ('school', 'student_id')         
+
+    def __str__(self):
+    	return f'{self.full_name} ({self.student_id}) in {self.student_class}'
+    	
+    def save(self, *args, **kwargs):
+    	if not self.email:
+    		self.email = f'student{self.student_id}@gamail.com'
+    	with transaction.atomic():
+    		super().save(*args, **kwargs)
+    		if self.user.email != self.email:
+    			self.user.email = self.email
+    			self.user.save(update_fields=['email'])
 
 
-	def __str__(self):
-		return f'{self.full_name} ({self.student_id}) in {self.student_class}'
-	
-	def save(self, *args, **kwargs):
-		if not self.email:
-			self.email = f'student{self.student_id}@gamail.com'
-		with transaction.atomic():
-			super().save(*args, **kwargs)
-			if self.user.email != self.email:
-				self.user.email = self.email
-				self.user.save(update_fields=['email'])
-				
 class AverageGrade(models.Model):
 	student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='average_grades')
 	Exam_title = models.CharField(max_length=50)

@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from students.models import Student
+from school.models import School
+
 
 # Create your models here.
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='parent')
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     username = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100, default=None)
     contact = models.CharField(max_length=10)

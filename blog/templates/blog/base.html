@@ -24,10 +24,10 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <!-- School Logo -->
-          <a class="navbar-brand d-flex align-items-center" href="{% url 'blog-home' %}">
+          <a class="navbar-brand d-flex align-items-center"  href="{% url 'school-home' school_slug=school.slug %}">
               <img src="{% static 'blog/logo.jpeg' %}" alt="School Logo" 
                   class="rounded-circle me-2" height="50" width="50">
-                  <span class="navbar-brand mr-2">EduRolling</span>
+                  <span class="navbar-brand mr-2">{{ school.name }}</span>
             </a>
         <div class="container">
 
@@ -72,7 +72,7 @@
                     <!--a class="nav-item nav-link" href="{% url 'blog-gallerly' %}">Gallerly</a-->
                     <!--a class="nav-item nav-link" href="#">Contact us</a-->
                     <!--a class="nav-item nav-link" href="#">Alumni</a-->
-                    <a class="nav-item nav-link text-light" href="{% url 'blog-blogs' %}">Blog</a>
+                    <a class="nav-item nav-link text-light" href="{% url 'blog-blogs' school_slug=school.slug %}">Blog</a>
                     <div class="dropdown mt-2">
                       <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
                         Parents portal
@@ -183,7 +183,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <footer class="footer bg-dark text-light text-center p-3">
     <div class="container">
-      <p class="text-muted mr-3">&copy; 2024 ABC SCHOOL. All rights reserved <br><span>Created and maintained by ABC ICT team and ABC support team</span></p>
+      <p class="text-muted mr-3">&copy; 2026 EDUROLLING SCHOOL. All rights reserved <br><span>Created and maintained by ABC ICT team and ABC support team</span></p>
     </footer>
   </body>
 </html>
