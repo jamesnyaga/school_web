@@ -13,7 +13,7 @@
       {% endif %}
       <h2 class="article-title">{{ post.title }}</h2>
       <p class="article-content">{{ post.content }}</p>
-      <a href="{% url 'blog-blogs' %}">Back to Blog</a>
+      <a href="{% url 'blog-blogs' school_slug=school_slug %}">Back to Blog</a>
     </div>
   </article>
 {% endblock %}

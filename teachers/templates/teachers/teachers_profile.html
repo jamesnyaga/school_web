@@ -14,18 +14,21 @@
                          <fieldset class="form-group">
                             <div class="form-group"><legend class="border-bottom mb-4">Edit Profile</legend>
                                {{ form|crispy }}
-                               <a href="{% url 'tr-profile-update' %}"><button class="btn btn-outline-info">Edit profile</button></a>
+                               <a href="{% url 'tr-profile-update' school_slug=school.slug %}">
+                                 <button class="btn btn-outline-info">Edit profile</button>
+                                </a>
                             </div>
                          </fieldset>
                         <hr>
                         <h2 class="text-secondary">Students in {{teacher.class_teacher}}</h2>
                         {%for student in students%}
                             <li>
-                              {{student.full_name}} <a href="{% url 'tr-student-profile-update' student.id %}">Adm No-{{student.student_id}}</a>
+                              {{student.full_name}} <a href="{% url 'tr-student-profile-update' school_slug=school.slug student_id=student.id %}">Adm No-{{student.student_id}}</a>
+                              <a href="{% url 'marks-entry' school_slug=school.slug %}">marks ent</a>
                             </li>
                         {%endfor%}
                     </div>
                </div>
-          </div>
+          </div>    
      </div>
 {%endblock content%}

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from students.models import Class
+from academic.models import SchoolClass
 from school.models import School
 
 
@@ -11,11 +11,11 @@ class Teacher(models.Model):
     username = models.CharField(max_length=100)
     full_name = models.CharField(max_length=30, unique=False)
     tr_description = models.TextField()
-    class_teacher = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
+    class_teacher = models.ForeignKey(SchoolClass, on_delete=models.SET_NULL, null=True, blank=True)
     
     def my_students(self):
-        return self.class_teacher.student_set.filter(school=self.school)
-    
+        return Student.objects.for_school(self.school).filter(student_class=self.class_teacher)
+        
     def __str__(self):
         return f'Teacher {self.full_name} profile({self.class_teacher})'
 

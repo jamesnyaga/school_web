@@ -93,7 +93,7 @@
          </div>
       </div>
        <h3 class="text-muted py-3">Download Results</h3>
-       <a href="{% url 'download_results' %}" class="btn btn-outline-info mb-3 mr-5">Download</a>
-       <a class="btn btn-outline-info mb-3 ml-5" href="{% url 'profile_edit' %}">Profile Update</a>
+       <a href="{% url 'download_results' school_slug=school.slug %}" class="btn btn-outline-info mb-3 mr-5">Download</a>
+       <a class="btn btn-outline-info mb-3 ml-5" href="{% url 'profile_edit' school_slug=school.slug %}">Profile Update</a>
    </div>
 {% endblock %}

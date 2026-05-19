@@ -1,13 +1,17 @@
 from django.db import models, transaction
 from django.contrib.auth.models import User
 from PIL import Image
+from academic.models import SchoolClass
 from school.models import School
 
 # Create your models here.
+
 class Class(models.Model):
-	name = models.CharField(max_length=100)
-	def __str__(self):
-		return self.name
+    name = models.CharField(max_length=100)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return f'{self.school},{self.name}'
+
 
 class StudentManager(models.Manager):
     def for_school(self, school):
@@ -41,13 +45,13 @@ class Student(models.Model):
 
 
 class AverageGrade(models.Model):
-	student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='average_grades')
-	Exam_title = models.CharField(max_length=50)
-	grade = models.CharField(max_length=2)
-	date_recorded = models.DateField()
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='average_grades')
+    Exam_title = models.CharField(max_length=50)
+    grade = models.CharField(max_length=2)
+    date_recorded = models.DateField()
 
-	def __str__(self):
-		return f"{self.student.student_id}: {self.grade}" 
+    def __str__(self):
+    	return f"{self.student.student_id}: {self.grade}" 
 
 class Assignment(models.Model):
 	student = models.ForeignKey(Student,on_delete=models.CASCADE, related_name='assignments')

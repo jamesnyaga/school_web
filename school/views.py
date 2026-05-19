@@ -2,32 +2,24 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from.models import Gallery
+from school.models import School
 from.forms import GalleryUpdateForm
 from students .models import Student, Profile
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
-def gallery_display(request,school_slug=None):
-    user = request.user
-    
-    if hasattr(user, 'teacher'):
-        school = user.teacher.school
-    elif hasattr(user, 'student'):
-        school = user.student.school
-    elif hasattr(user, 'parent'):
-        school = user.parent.school
-    else:
-        # fallback to EDUROLLING if no profile
-        from school.models import School
-        school = School.objects.get(slug='edurolling')
+def gallery_display(request, school_slug=None):
 
-    school = School.objects.get(slug=school_slug)
+    school = get_object_or_404(School, slug=school_slug)
 
-    images2 = Gallery.objects.filter(school=school)
+    images = Gallery.objects.filter(school=school)
 
-    context = {'images': images2, 'school':school}
-    return render(request, 'school/gallery.html', context)
+    return render(request, 'school/gallery.html', {
+        'images': images,
+        'school': school
+    })
 
 def super_user_require(view_func):
      def wrapper(request, *args, **kwargs):
@@ -57,6 +49,8 @@ def GalleryUpdate(request):
 
 
 def register(request):
+    school = School.objects.filter(code='EDU001').first()
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -64,9 +58,14 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}')
             return redirect('login')
+
     else:
         form = RegistrationForm()
-    return render(request, 'school/register.html', {'form':form})
+
+    return render(request, 'school/register.html', {
+        'form': form,
+        'school': school
+    })
 
 @login_required
 def profile(request):
@@ -82,6 +81,41 @@ def profile(request):
     
     return render(request, 'school/profile.html', context)
 
+
+
+
+from django.shortcuts import redirect
+
+def dashboard_redirect(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return redirect('login')
+
+    try:
+        return redirect('school-home', school_slug=user.student.school.slug)
+    except:
+        pass
+
+    try:
+        return redirect('school-home', school_slug=user.teacher.school.slug)
+    except:
+        pass
+
+    try:
+        return redirect('school-home', school_slug=user.parent.school.slug)
+    except:
+        pass
+
+    # fallback
+    return redirect('login')
+
+
+
+
+
+
+
 @login_required
 def profile_redirect(request):
     user = request.user
@@ -91,3 +125,5 @@ def profile_redirect(request):
         return redirect('teacher-profile')
     else:
         return redirect('default-profile')
+
+

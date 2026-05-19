@@ -1,0 +1,159 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-3">Marks Entry</h3>
+
+    <!-- FILTER -->
+    <form method="get" class="row g-2 mb-4">
+
+        <div class="col-md-2">
+            <select name="class" class="form-control" required>
+                <option value="">Class</option>
+                {% for c in classes %}
+                    <option value="{{ c.id }}"
+                        {% if selected_class == c.id %}selected{% endif %}>
+                        {{ c.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="subject" class="form-control" required>
+                <option value="">Subject</option>
+                {% for s in subjects %}
+                    <option value="{{ s.id }}"
+                        {% if selected_subject == s.id %}selected{% endif %}>
+                        {{ s.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="term" class="form-control" required>
+                <option value="">Term</option>
+                {% for t in terms %}
+                    <option value="{{ t.id }}"
+                        {% if selected_term == t.id %}selected{% endif %}>
+                        {{ t.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="exam" class="form-control" required>
+                <option value="">Exam</option>
+                {% for e in exams %}
+                    <option value="{{ e.id }}"
+                        {% if selected_exam == e.id %}selected{% endif %}>
+                        {{ e.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Load</button>
+        </div>
+
+    </form>
+
+    {% if students %}
+
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Marks</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.full_name }}</td>
+
+                <td>
+                    <input type="number"
+                           class="form-control mark-input"
+                           data-student="{{ student.id }}"
+                           value="{{ student.saved_marks }}">
+                </td>
+
+                <td>
+                    <span id="grade-{{ student.id }}" class="badge bg-secondary">
+                         {{ student.saved_grade }}
+
+                    </span>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+</div>
+
+<script>
+document.querySelectorAll(".mark-input").forEach(input => {
+
+    input.addEventListener("input", function () {
+
+        let marks = this.value;
+        let studentId = this.dataset.student;
+
+        if (marks > 100) {
+            alert("Max is 100");
+            this.value = 100;
+            return;
+        }
+
+        fetch("/edurolling/academic/ajax/save-mark/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                student_id: studentId,
+                marks: marks,
+                subject_id: "{{ selected_subject }}",
+                term_id: "{{ selected_term }}",
+                exam_id: "{{ selected_exam }}"
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+
+            if (data.success) {
+                let gradeBox = document.getElementById("grade-" + studentId);
+                gradeBox.innerText = data.grade;
+                gradeBox.className = "badge " + getColor(data.grade);
+            }
+        });
+
+    });
+
+});
+
+function getColor(grade) {
+    if (grade.startsWith("A")) return "bg-success";
+    if (grade.startsWith("B")) return "bg-primary";
+    if (grade.startsWith("C")) return "bg-warning";
+    if (grade.startsWith("D")) return "bg-secondary";
+    return "bg-danger";
+}
+</script>
+
+{% endblock %}

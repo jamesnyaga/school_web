@@ -1,99 +1,158 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
+
 from .models import BlogPosts
-from parents.models import Parent
-from teachers.models import Teacher
 from school.models import School, Gallery
-# Create your views here.
-def Post_list(request, school_slug):
-    user = request.user
-
-    if hasattr(user, 'teacher'):
-        school = user.teacher.school
-    elif hasattr(user, 'student'):
-        school = user.student.school
-    elif hasattr(user, 'parent'):
-        school = user.parent.school
-    else:
-        # fallback to EDUROLLING if no profile
-        school = School.objects.get(code='EDU001')
-
-    # Filter posts by the user's school
-    school = get_object_or_404(School, slug=school_slug)
-    posts = BlogPosts.objects.filter(school=school).order_by('-date_posted')
-
-    context = {'posts': posts, 'school':school}
-    return render(request, 'blog/blog_posts.html', context)
-
-def get_profile_pic(self):
-	if hasattr(self, 'parent'):
-		return self.parent.profile.image.url
-	elif hasattr(self, 'teacher'):
-		return self.teacher.profile.image.url
-	else:
-		return self.profile.image.url if hasattr(self, 'profile')else 'media/parents_default_image.jpg'
-User.add_to_class('get_profile_pic',get_profile_pic)
-
-def PostDetails(request, id):
-	post = get_object_or_404(BlogPosts, id=id)
-	context = {
-		'post':post
-	}
-	return render(request, 'blog/blog_detail.html', context)
-
-def latestPosts(request):
-	return render(request, 'blog/latest_posts.html')
 
 
-
-
-
-def home(request, school_slug=None):
-    # If school_code is None, fallback to EDUROLLING
+# =========================
+# HELPER FUNCTION
+# =========================
+def get_current_school(school_slug):
+    """
+    Returns the correct school based on slug.
+    Falls back to EDU001 if slug is not provided.
+    """
     if school_slug:
-        school = get_object_or_404(School, slug=school_slug.lower())  # school codes are uppercase
-    else:
-        school = School.objects.get(code='EDU001')  # EDUROLLING default
+        return get_object_or_404(School, slug=school_slug.lower())
 
-    gallery_images = Gallery.objects.filter(school=school)
-    posts = BlogPosts.objects.filter(school=school).order_by('-date_posted')
+    return get_object_or_404(School, code='EDU001')
 
-    context = {
+
+# =========================
+# BLOG LIST VIEW
+# =========================
+def Post_list(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    posts = BlogPosts.objects.filter(
+        school=school
+    ).order_by('-date_posted')
+
+    return render(request, 'blog/blog_posts.html', {
+        'posts': posts,
+        'school': school,
+        'school_slug':school_slug
+    })
+
+
+# =========================
+# BLOG DETAIL VIEW
+# =========================
+def PostDetails(request, id, school_slug=None):
+    school = get_current_school(school_slug)
+
+    post = get_object_or_404(
+        BlogPosts,
+        id=id,
+        school=school
+    )
+
+    return render(request, 'blog/blog_detail.html', {
+        'post': post,
+        'school': school,
+        'school_slug':school_slug
+    })
+
+def latestPosts(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    posts = BlogPosts.objects.all().order_by('-created_at')
+
+    return render(request, 'blog/blog_detail.html', {
+        'post': post,
+        'school': school,
+        'school_slug':school_slug
+    })
+# =========================
+# HOME VIEW
+# =========================
+def home(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    gallery_images = Gallery.objects.filter(
+        school=school
+    )
+
+    posts = BlogPosts.objects.filter(
+        school=school
+    ).order_by('-date_posted')
+
+    return render(request, 'blog/home.html', {
         'school': school,
         'gallery_images': gallery_images,
         'posts': posts,
-    }
-    return render(request, 'blog/home.html', context)
+    })
 
 
+# =========================
+# GALLERY VIEW (FIXED)
+# SAME FUNCTIONALITY AS BLOG
+# =========================
+def gallery_display(request, school_slug=None):
+
+    school = get_object_or_404(School, slug=school_slug)
+
+    images = Gallery.objects.filter(school=school)
+
+    return render(request, 'school/gallery.html', {
+        'images': images,
+        'school': school
+    })
 
 
+# =========================
+# STATIC PAGES (SCHOOL BASED)
+# =========================
+def about(request, school_slug=None):
+    school = get_current_school(school_slug)
 
-def about(request):
-	return render(request, 'blog/about.html')
+    return render(request, 'blog/about.html', {'school': school,'school_slug':school_slug})
 
-def Academics(request):
-	return render(request, 'blog/academics.html')
 
-def Admission(request):
-	return render(request, 'blog/admission.html')
+def Academics(request, school_slug=None):
+    school = get_current_school(school_slug)
 
-def Student_lifes(request):
-	return render(request, 'blog/student_lifes.html')
+    return render(request, 'blog/academics.html', {'school': school})
 
-def Gallerly(request):
-	return render(request, 'blog/gallerly.html')
 
-    
+def Admission(request, school_slug=None):
+    school = get_current_school(school_slug)
 
-def login(request):
-	return render(request, 'blog/login.html')
+    return render(request, 'blog/admission.html', {'school': school})
 
-def announcements(request):
-	return render(request, 'blog/announcements.html')
 
-def calendars(request):
-	return render(request, 'blog/calendars.html')
+def Student_lifes(request, school_slug=None):
+    school = get_current_school(school_slug)
 
-def Others(request):
-	return render(request, 'blog/others.html')
+    return render(request, 'blog/student_lifes.html', {'school': school})
+
+
+def login(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    # SAFETY CHECK (critical)
+    if not school.slug:
+        school.slug = school.code.lower()
+
+    return render(request, 'blog/login.html', {
+        'school': school
+    })
+
+
+def announcements(request, school_slug):
+    school = get_current_school(school_slug)
+
+    return render(request, 'blog/announcements.html', {'school': school})
+
+
+def calendars(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    return render(request, 'blog/calendars.html', {'school': school})
+
+
+def Others(request, school_slug=None):
+    school = get_current_school(school_slug)
+
+    return render(request, 'blog/others.html', {'school': school})

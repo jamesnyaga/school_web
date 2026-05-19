@@ -8,29 +8,41 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.contrib.auth.models import Group, User
 from .models import Student
+from school.models import School
 from .forms import StudentRegistration, StudentsProfileUpdateForm, StudentUpdateForm, StudentsUpdateForm
 
-def studentsregister(request):
+def studentsregister(request, school_slug):
+    school = get_object_or_404(School, slug=school_slug)
+
     if request.method == 'POST':
         form = StudentRegistration(request.POST)
         if form.is_valid():
             student = form.save()
-            student_username = student.username
-            # Add user to the Students group
+
             students_group, created = Group.objects.get_or_create(name='Students')
             students_group.user_set.add(student)
+
             student.is_staff = False
             student.is_superuser = False
             student.save()
-            messages.success(request, f'Account for {student_username} has been created. You are now able to log in.')
+
+            messages.success(request, f'Account for {student.username} has been created. You are now able to log in.')
             return redirect('login')
     else:
         form = StudentRegistration()
-    return render(request, 'students/students_register.html', {'form': form})
+
+    return render(request, 'students/students_register.html', {
+        'form': form,
+        'school': school
+    })
 
 @login_required
-def StudentProfile(request):
-    student = getattr(request.user, 'student', None)
+def StudentProfile(request, school_slug):
+    student = get_object_or_404(
+        Student,
+        user=request.user,
+        school__slug=school_slug
+    )
     try:
         profile = request.user.student
     except ObjectDoesNotExist:
@@ -49,14 +61,16 @@ def StudentProfile(request):
         'assignments':assignments,
         'average_grades': average_grades,
         'comments': comments,
+        'school':student.school
     }
     return render(request, 'students/students_profile.html', context)
 
 
 
 @login_required
-def StudentProfile_edit(request):
+def StudentProfile_edit(request, school_slug):
     student = getattr(request.user, 'student',None)
+    school = get_object_or_404(School, slug=school_slug)
     if not student:
         return render(request, 'students/error.html')
     
@@ -70,7 +84,7 @@ def StudentProfile_edit(request):
             p_form.save()
             s_form.save()
             messages.success(request, f'Account for {student.full_name} update successifully')
-            return redirect('students-profile')
+            return redirect('students-profile',school_slug=request.user.student.school.slug)
     else:
         u_form = StudentsUpdateForm(instance=request.user)
         p_form = StudentsProfileUpdateForm(instance=student.profile)
@@ -79,15 +93,17 @@ def StudentProfile_edit(request):
         'student':student,
         'u_form':u_form,
         'p_form':p_form,
-        's_form':s_form
+        's_form':s_form,
+        'school':school
     }
     return render(request, 'students/students_profile_edit.html', context)
 
 
 
 @login_required
-def download_results(request):
+def download_results(request, school_slug):
     student = getattr(request.user, 'student', None)
+    school = get_object_or_404(School, slug=school_slug)
     if not student:
         return render(request, 'students/error.html')
     student_profile = request.user.student
@@ -98,6 +114,7 @@ def download_results(request):
         'profile': student_profile,
         'grades': grades,
         'average_grades': average_grades,
+        'school':school,
     }
 
     # Render the HTML template with the context
@@ -115,3 +132,9 @@ def download_results(request):
     
     response.write(result.getvalue())
     return response
+
+
+
+
+
+

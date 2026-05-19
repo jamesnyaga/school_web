@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'teachers.apps.TeachersConfig',
     'parents.apps.ParentsConfig',
     'school.apps.SchoolConfig',
+    'academic.apps.AcademicConfig',
     'crispy_forms',
     'django_extensions',
     'crispy_bootstrap4',
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'school.context_processors.school_context',
             ],
         },
     },
@@ -153,7 +155,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 
 

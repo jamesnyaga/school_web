@@ -9,24 +9,31 @@ from students.models import Student, Profile
 
 # Create your views here.
 @login_required
-def TeachersProfile(request):
-    teacher = getattr(request.user, 'teacher', None)
+def TeachersProfile(request, school_slug):
+    teacher = get_object_or_404(
+        Teacher,
+        user=request.user,
+        school__slug=school_slug
+    )
 
     if not teacher:
         return render(request, 'teachers/error.html')
+
+    students = Student.objects.filter(school=request.user.teacher.school)
     
-    students = Student.objects.for_school(request.user.teacher.school).filter(student_class=request.user.teacher.class_teacher)
     context = {
         'students':students,
         'profile':Profile,
         'teacher':teacher,
+        'school': teacher.school,
     }
 
     return render(request, 'teachers/teachers_profile.html', context)
 
 @login_required
-def teacher_profile_update(request):
+def teacher_profile_update(request, school_slug):
     teacher = getattr(request.user, 'teacher', None)
+    school = request.user.teacher.school
     if not teacher:
         return render(request, 'teachers/error.html')
     if request.method == 'POST':
@@ -38,7 +45,7 @@ def teacher_profile_update(request):
             p_form.save()
             t_form.save()
             messages.success(request, 'your profile has been updated successiful!')
-            return redirect('teachers-profile')
+            return redirect('teachers-profile', school_slug=school.slug)
     else:
         p_form = TeachersProfileUpdateForm(instance=teacher.profile)
         u_form = TeachersUpdateForm(instance=request.user)
@@ -54,9 +61,10 @@ def teacher_profile_update(request):
     return render(request,'teachers/profile_update.html', context)
 
 @login_required
-def update_student_info(request, student_id):
+def update_student_info(request, student_id, school_slug):
     teacher = getattr(request.user, 'teacher', None)
     student = get_object_or_404(Student, id =student_id)
+    school = request.user.teacher.school
     if not teacher:
         return render(request, 'teachers/error.html')
     
@@ -78,8 +86,8 @@ def update_student_info(request, student_id):
             comment_form.save()
             resource_form.save()
             profile_form.save()
-            messages.success(request, f'{student.full_name} profile has been updated successifull!')
-            return redirect('teachers-profile')
+        messages.success(request, f'{student.full_name} profile has been updated successifull!')
+        return redirect('teachers-profile', school_slug=school.slug)
     else:
         student_form = Tr_StudentUpdateForm(instance=student)
         student_u_form = Tr_StudentsUpdateForm(instance=student.user)

@@ -24,7 +24,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <!-- School Logo -->
-          <a class="navbar-brand d-flex align-items-center"  href="{% url 'school-home' school_slug=school.slug %}">
+          <a class="navbar-brand d-flex align-items-center"  href="/{{ school.slug }}/">
               <img src="{% static 'blog/logo.jpeg' %}" alt="School Logo" 
                   class="rounded-circle me-2" height="50" width="50">
                   <span class="navbar-brand mr-2">{{ school.name }}</span>
@@ -66,56 +66,57 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-                <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link text-light" href="{% url 'blog-about' %}">About</a>
-                    <!--a class="nav-item nav-link" href="{% url 'blog-gallerly' %}">Gallerly</a-->
-                    <!--a class="nav-item nav-link" href="#">Contact us</a-->
-                    <!--a class="nav-item nav-link" href="#">Alumni</a-->
-                    <a class="nav-item nav-link text-light" href="{% url 'blog-blogs' school_slug=school.slug %}">Blog</a>
-                    <div class="dropdown mt-2">
-                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                        Parents portal
-                      </button>
-                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item  text-dark" href="{% url 'parents-register' %}">Register</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'parents-profile' %}">Profile</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'parents-profile-update' %}">Profile Update</a></li>
-                      </ul>
-                    </div>
-                    <div class="dropdown mt-2">
-                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                        Students portal
-                      </button>
-                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item  text-dark" href="{% url 'students-register' %}">Register</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'students-profile' %}">Profile</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'profile_edit' %}">Profile Update</a></li>
-                      </ul>
-                    </div>
-                    <div class="dropdown mt-2">
-                      <button class="btn dropdown-toggle bg-steel text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                        Teachers portal
-                      </button>
-                      <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item  text-dark" href="{% url 'teachers-register' %}">Register</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'teachers-profile' %}">Profile</a></li>
-                        <li><a class="dropdown-item text-dark" href="{% url 'tr-profile-update' %}">Profile Update</a></li>
-                      </ul>
-                    </div>
-                </div>
-                <!-- Navbar Right Side -->
-                <div class="navbar-nav">
-                    {% if user.is_authenticated %}
-                       <a class="nav-item nav-link text-light" href="{% url 'logout' %}">Logout</a>
-                       <a class="nav-item nav-link text-light" href="{% url 'profile' %}">profile</a>
-                    {% else %}
-                       <a class="nav-item nav-link text-light" href="{% url 'blog-login' %}">Login</a>
-                       <a class="nav-item nav-link text-light" href="{% url 'register' %}">register</a>
-                    {% endif %}
-                </div>
             </div>
-        </div> <!-- Closing div for container -->
+              <div class="collapse navbar-collapse" id="navbarToggle">
+
+    <!-- Left side -->
+    <div class="navbar-nav mr-auto">
+        <a class="nav-item nav-link text-light" href="{% url 'blog-about' school_slug=school.slug %}">
+            About
+        </a>
+    </div>
+
+    <!-- Right side -->
+    <div class="navbar-nav">
+
+        {% if user.is_authenticated %}
+
+            {% if user.student %}
+                <a class="nav-item nav-link text-light"
+                   href="{% url 'students-profile' school_slug=school.slug %}">
+                    Profile
+                </a>
+
+            {% elif user.parent %}
+                <a class="nav-item nav-link text-light"
+                   href="{% url 'parents-profile' school_slug=school.slug %}">
+                    Profile
+                </a>
+
+            {% elif user.teacher %}
+                <a class="nav-item nav-link text-light"
+                   href="{% url 'teachers-profile' school_slug=school.slug %}">
+                    Profile
+                </a>
+            {% endif %}
+
+              <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                 {% csrf_token %}
+                  <button type="submit" class="nav-item nav-link text-light" style="background:none; border:none;">
+                      Logout
+                    </button>
+              </form>
+
+        {% else %}
+
+            <a class="nav-item nav-link text-light" href="{% url 'login' %}">
+                Login
+            </a>
+
+        {% endif %}
+
+    </div>
+</div>
     </nav>
     <main role="main" class="container">
       <div class="row">
@@ -134,10 +135,10 @@
             <h3 class="text-light">Our Sidebar</h3>
             <p class='text-muted text-light'>You can put any information here you'd like.
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-latestPosts' %}">Latest Posts</a></li>
-                <li class="list-group-item list-group-item-light"> <a href="{% url 'blog-announcements' %}">Announcements</a></li>
-                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-calendars' %}">Calendars</a></li>
-                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-others' %}">etcs</a></li>
+                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-latest-posts' school_slug=school.slug %}">Latest Posts</a></li>
+                <li class="list-group-item list-group-item-light"> <a href="{% url 'blog-announcements' school_slug=school.slug %}">Announcements</a></li>
+                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-calendars' school_slug=school.slug %}">Calendars</a></li>
+                <li class="list-group-item list-group-item-light"><a href="{% url 'blog-others' school_slug=school.slug %}">etcs</a></li>
               </ul>
             </p>
           </div>

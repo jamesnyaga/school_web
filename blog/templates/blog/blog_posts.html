@@ -12,10 +12,10 @@
             </div>
             <div class="">
               {% if post.image %}
-                  <a href="{% url 'blog-detail' post.id %}"><img class="blog-image img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}"></a>
+                  <a href="{% url 'blog-detail' school_slug=school.slug id=post.id  %}"><img class="blog-image img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}"></a>
               {% endif %}
             </div>
-            <h2><a class="article-title" href="{% url 'blog-detail' post.id %}">{{ post.title }}</a></h2>
+            <h2><a class="article-title" href="{% url 'blog-detail' school_slug=school.slug id=post.id  %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content|truncatewords:20 }}</p>
             <div class="row">
                 <div class="col-md-8">
@@ -28,7 +28,7 @@
         </div>
     </article>
     {% endfor %}
-    <a href="{% url 'blog-home' %}">Back to Homepage</a>
+    <a href="{% url 'blog-home' school_slug=school_slug %}">Back to Homepage</a>
 </div>
 {% endblock %}
 

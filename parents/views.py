@@ -3,11 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import Group, User
 from .models import Parent, Profile
+from school.models import School
 from students.models import Student
 from .forms import ParentCreationForm, ParentsUpdateForm, ParentUpdateForm,ParentProfileUpdateForm
 
 # Create your views here.
-def parents_register(request):
+def parents_register(request, school_slug):
+    school = get_object_or_404(School, slug=school_slug)
     if request.method == 'POST':
         form = ParentCreationForm(request.POST)
         if form.is_valid():
@@ -24,9 +26,9 @@ def parents_register(request):
             parent_user.is_staff = False
             parent_user.is_superuser = False
             try:
-                student = Student.objects.get(student_id =My_Student_Adm_No)
+                student = Student.objects.get(student_id =My_Student_Adm_No, school=parent.school)
             except Student.DoesNotExist:
-                messages.error(request,'Student with this admission number does not exist')
+                messages.error(request,'Student with this admission number does not exist in your school')
                 comit = False
                 return redirect('parents-register')
             
@@ -46,24 +48,28 @@ def parents_register(request):
     else:
         form = ParentCreationForm()
     context = {
-        'form':form
+        'form':form,
+        'school':school
     }
     return render(request, 'parents/register.html', context)
 
 @login_required
-def ParentsProfile(request):
+def ParentsProfile(request, school_slug):
     parent = getattr(request.user, 'parent',None)
+    school = get_object_or_404(School, slug=school_slug)
     if not parent:
         return redirect(request, 'parents/parents_error.html')
     student = parent.My_Student_Adm_No if parent.My_Student_Adm_No else None
     context = {
         'parent':parent,
         'student':student,
+        'school':school
     }
     return render(request, 'parents/parents_profile.html',context)
 
 @login_required
-def ParentsProfileUpdate(request):
+def ParentsProfileUpdate(request, school_slug):
+    school = get_object_or_404(School, slug=school_slug)
     parent = getattr(request.user, 'parent', None)
     if not parent:
         return render(request, 'parents/parents_error.html')
@@ -76,7 +82,7 @@ def ParentsProfileUpdate(request):
             pr_form.save()
             p_form.save()
             messages.success(request, 'Your profile has been updated successifuly!')
-            return redirect('parents-profile')
+            return redirect('parents-profile', school_slug=school.slug)
     else:
         u_form = ParentsUpdateForm(instance=request.user)
         pr_form = ParentUpdateForm(instance=parent)
@@ -85,7 +91,8 @@ def ParentsProfileUpdate(request):
         'parent':parent,
         'u_form':u_form,
         'pr_form':pr_form,
-        'p_form':p_form
+        'p_form':p_form,
+        'school':school
     }
 
     return render(request, 'parents/profile_update.html', context)
@@ -93,7 +100,8 @@ def ParentsProfileUpdate(request):
 
 
 @login_required
-def pr_StudentProfile(request, student_id):
+def pr_StudentProfile(request, student_id, school_slug):
+    school = get_object_or_404(School, slug=school_slug)
     profile = getattr(request.user, 'student', None) or getattr(request.user, 'parent', None)
     s_profile = get_object_or_404(Student, id=student_id)
 
@@ -118,6 +126,7 @@ def pr_StudentProfile(request, student_id):
         'grades': grades,
         'average_grades': average_grades,
         'comments': comments,
+        'school':school
     }
     return render(request, 'parents/my_students_profile.html', context)
 
